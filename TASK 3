@@ -1,0 +1,90 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+const int BOARD_SIZE = 3;
+void displayBoard(vector<char>& board) {
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    for (int j = 0; j < BOARD_SIZE; j++) {
+      cout << board[i * BOARD_SIZE + j] << " ";
+    }
+    cout << endl;
+  }
+}
+int getValidMove(vector<char>& board, char player) {
+  int move;
+  do {
+    cout << player << ", enter your move (1-9): ";
+    cin >> move;
+  } while (move < 1 || move > BOARD_SIZE * BOARD_SIZE || board[move - 1] != ' ');
+  return move - 1;
+}
+bool checkWin(vector<char>& board, char player) {
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    bool rowWin = true;
+    for (int j = 0; j < BOARD_SIZE; j++) {
+      if (board[i * BOARD_SIZE + j] != player) {
+        rowWin = false;
+        break;
+      }
+    }
+    if (rowWin) {
+      return true;
+    }
+  }
+  for (int i = 0; i < BOARD_SIZE; i++) {
+    bool colWin = true;
+    for (int j = 0; j < BOARD_SIZE; j++) {
+      if (board[j * BOARD_SIZE + i] != player) {
+        colWin = false;
+        break;
+      }
+    }
+    if (colWin) {
+      return true;
+    }
+  }
+  if (board[0] == player && board[4] == player && board[8] == player) {
+    return true;
+  }
+  if (board[2] == player && board[4] == player && board[6] == player) {
+    return true;
+  }
+  return false;
+}
+bool isDraw(vector<char>& board) {
+  for (char cell : board) {
+    if (cell == ' ') {
+      return false;
+    }
+  }
+  return true;
+}
+int main() {
+  vector<char> board(BOARD_SIZE * BOARD_SIZE, ' '); 
+  char currentPlayer = 'X';
+  while (true) {
+    displayBoard(board);
+    int move = getValidMove(board, currentPlayer);
+    board[move] = currentPlayer;
+    if (checkWin(board, currentPlayer)) {
+      displayBoard(board);
+      cout << currentPlayer << " wins!" << endl;
+      break;
+    } else if (isDraw(board)) {
+      displayBoard(board);
+      cout << "It's a draw!" << endl;
+      break;
+    }
+    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+  }
+  char playAgain;
+  cout << "Play again? (y/n): ";
+  cin >> playAgain;
+  if (playAgain == 'y' || playAgain == 'Y') {
+    board.assign(BOARD_SIZE * BOARD_SIZE, ' ');
+    currentPlayer = 'X';
+  } else {
+    cout << "Thanks for playing!" << endl;
+    return 0;
+  }
+}
