@@ -1,0 +1,41 @@
+#include <iostream>
+int main() {
+    double a, b;
+    char operation;
+    std::cout << "Calculator For Arithmatic Operations:-" << std::endl;
+    std::cout << "Enter the first number: ";
+    std::cin >> a;
+    std::cout << "Enter the second number: ";
+    std::cin >> b;
+    std::cout << "Choose an operation (+, -, *, /): ";
+    std::cin >> operation;
+    double result;
+    bool validOperation = true;
+    switch (operation) {
+        case '+':
+            result = a + b;
+            break;
+        case '-':
+            result = a - b;
+            break;
+        case '*':
+            result = a * b;
+            break;
+        case '/':
+            if (b != 0) {
+                result = a / b;
+            } else {
+                std::cout << "Error: Division by zero is not allowed." << std::endl;
+                validOperation = false;
+            }
+            break;
+        default:
+            std::cout << "Error: Invalid operation." << std::endl;
+            validOperation = false;
+    }
+    if (validOperation) {
+        std::cout << "The result is: " << result << std::endl;
+    }
+    return 0;
+}
+
